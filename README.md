@@ -1,4 +1,4 @@
-# LabProg-Final
+# Clusterização com K-means
 Trabalho final da matéria Laboratório de Programação.
 
-Adicionar no README os detalhes para execução.
+Adicionar os detalhes para execução.
