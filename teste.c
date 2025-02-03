@@ -16,10 +16,10 @@
 
 //∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗/
 // Aluno : Lanai Giani Lima Oliveira
-// Matricula : vejam ai
+// Matricula : 20231045050351
 // Avaliação 04 : Trabalho Final
 // 04.505.23 − 2024.2 − Prof. Daniel Ferreira
-// Compilador : vejam ai
+// Compilador : gcc (MinGW.org GCC-6.3.0-1) 6.3.0
 //∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗/
 
 //∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗/
