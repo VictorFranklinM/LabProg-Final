@@ -24,10 +24,10 @@
 
 //∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗/
 // Aluno : Kalebe Ribeiro Sousa
-// Matricula : vejam ai
+// Matricula : 20241045050421
 // Avaliação 04 : Trabalho Final
 // 04.505.23 − 2024.2 − Prof. Daniel Ferreira
-// Compilador : vejam ai
+// Compilador : gcc (MinGW.org GCC-6.3.0-1) 6.3.0
 //∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗/
 
 #include <dirent.h>
