@@ -33,6 +33,6 @@
 #ifndef KMEANS_H
 #define KMEANS_H
 
-void Kmeans(int, int, int,unsigned char*);
+void Kmeans(struct pgm *, unsigned char);
 
 #endif
