@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include <time.h>
 #include "pgm/pgm.h"
 #include "k-means/k-means.h"
 
 int main(int argc, char *argv[]){
+    DIR *d;
+    int qtdimg = 0;
+    struct dirent *dir;
     struct pgm img;
 
     if (argc != 4) {
@@ -19,7 +24,7 @@ int main(int argc, char *argv[]){
     }
 
     readPGMImage(&img,argv[2]);
-    Kmeans(k, img.r, img.c, img.pData);
+    Kmeans(&img,k);
     writePGMImage(&img,argv[3]);
 
     return 0;
