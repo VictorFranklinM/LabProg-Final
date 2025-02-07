@@ -30,6 +30,12 @@
 # Compilador : gcc (MinGW.org GCC-6.3.0-1) 6.3.0
 #∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗#
 
+ifeq ($(OS),Windows_NT)
+    RM = cmd /C del /Q
+else
+    RM = rm -f
+endif
+
 all: prog.exe
 
 prog.exe: k-means/k-means.o pgm/pgm.o main.o
@@ -45,4 +51,14 @@ main.o: main.c
 	gcc -c $< -o $@
 
 clean:
-	rm -f prog.exe k-means/k-means.o pgm/pgm.o main.o
+ifeq ($(OS),Windows_NT)
+	-$(RM) prog.exe
+	-$(RM) main.o
+	-$(RM) k-means\k-means.o
+	-$(RM) pgm\pgm.o
+else
+	-$(RM) prog.exe
+	-$(RM) main.o
+	-$(RM) k-means/k-means.o
+	-$(RM) pgm/pgm.o
+endif
