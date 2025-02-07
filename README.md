@@ -30,5 +30,8 @@ O programa recebe o valor **K** por linha de comando.
 Ex:
 ```
 ./nome_do_executavel 3
-``` 
-Esta execução fará com que todas as imagens dentro da pasta **"images"** sejam filtradas para apenas 3 tons de cinza, e as imagens filtradas poderão ser encontradas na subpasta **"results"**. Além disso, o tempo de processamento será apresentado como mensagem no terminal.
+```
+> [!NOTE]
+> Caso o executavel seja gerado pelo comando **"make"**, o nome do executavel será: "**prog.exe**"
+
+Esta execução fará com que todas as imagens dentro da pasta **"images"** sejam filtradas para apenas **3** tons de cinza, e as imagens filtradas poderão ser encontradas na subpasta **"results"**. Além disso, o tempo de processamento será apresentado como mensagem no terminal.
