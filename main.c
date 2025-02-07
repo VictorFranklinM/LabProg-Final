@@ -32,6 +32,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <dirent.h>
 #include <time.h>
 #include "pgm/pgm.h"
@@ -39,25 +40,59 @@
 
 int main(int argc, char *argv[]){
     DIR *d;
-    int qtdimg = 0;
+    clock_t begin, end;
+
     struct dirent *dir;
     struct pgm img;
 
-    if (argc != 4) {
-        printf("Formato: \n\t %s <Valor de K (2 a 255)> <imagemEntrada.pgm> <imagemSaida.pgm>\nExemplo:\n\t %s 3 entrada.pmg saida.pgm\n", argv[0],argv[0]);
+    int qtdimg = 0;
+    double time_per_img, time_total=0;
+
+    if (argc != 2) {
+        printf("Formato: \n\t %s <Valor de K (1 a 255)>\n", argv[0]);
         exit(1);
+    }
+
+    if ((atoi(argv[1])) < 1){
+        puts("Digite um valor de K dentro da faixa 1-255.");
+        exit(2);
     }
 
     unsigned char k = atoi(argv[1]);
 
-    if (k<=1){
-        puts("Digite um valor de K dentro da faixa 2-255.");
-        exit(2);
+    begin = clock();
+
+    d = opendir("./images");
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            if((dir->d_name[0]=='.') || (strcmp(dir->d_name, "results") == 0)){
+                continue;
+            }
+            qtdimg++;
+
+            char folder_img[80]="images/";
+
+			readPGMImage(&img,strcat(folder_img,dir->d_name));
+
+            K_means(k, img.r, img.c, img.pData);
+
+            char folder_result[80]="images/results/";
+
+            writePGMImage(&img,strcat(folder_result,dir->d_name));
+ 
+        }
+        closedir(d);
     }
 
-    readPGMImage(&img,argv[2]);
-    K_means(k, img.r, img.c, img.pData);
-    writePGMImage(&img,argv[3]);
+    end = clock();
+
+    time_total = (double)(end - begin) / CLOCKS_PER_SEC;
+    time_per_img = time_total / qtdimg;
+
+    printf("Tempo Total: %lf\n",time_total);
+    printf("Tempo por Imagem: %lf\n",time_per_img);
 
     return 0;
 }
