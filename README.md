@@ -15,7 +15,9 @@ O código utiliza as bibliotecas **"pgm.h"** e **"k-means.h"**. Antes de compila
 2. Pasta **"k-means"**
    - k-means.h
 3. Pasta **"images"**
-   - Pasta **results**
+   - Imagens de Entrada
+   - Pasta **"results"**
+     - Imagens de Saída
 
 # Compilação:
 
