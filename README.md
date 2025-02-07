@@ -1,7 +1,7 @@
 # Clusterização com K-means
 ### Um projeto feito como trabalho final da cadeira de Laboratório de Programação do curso de Bacharelado em Ciências da Computação.
 
-O código é um algoritmo **K-means**, escrito na linguagem C, que lê imagens **PGM** (Portable Gray Map) dentro da pasta "images" e as clusteriza para um valor **K**, que deve ser determinado pelo usuário na hora da execução, gerando uma imagem PGM clusterizada ao fim do processo, que será guardada na pasta "results", dentro da pasta "images". O código também apresenta, no final, o tempo total necessário para clusterizar todas as imagens e a média do tempo necessário para clusterizar cada uma individualmente.
+O código é um algoritmo **K-means**, escrito na linguagem C, que lê imagens **PGM** (Portable Gray Map) dentro da pasta **"images"** e as clusteriza para um valor **K**, que deve ser determinado pelo usuário na hora da execução, gerando uma imagem PGM clusterizada ao fim do processo, que será guardada na pasta **"results"**, dentro da pasta **"images"**. O código também apresenta, no final, o tempo total necessário para clusterizar todas as imagens e a média do tempo necessário para clusterizar cada uma individualmente.
 
 # Requisitos:
 
