@@ -33,22 +33,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct pgm{
-	int tipo;
-	int c;
-	int r;
-	int mv;
-	unsigned char *pData;
-};
-
-void Kmeans(struct pgm *img, unsigned char k){
+void K_means(int k, int lin, int col, unsigned char *data){
 
     /* Centroids é o vetor que irá ser armazenar K tons de cinza para agrupar os pixels que se assemelham a cada cor central,
         vulgo centroide, em K conjuntos, vulgo clusters.
         Ex: Centroid[0] = 63 e Centroid[1] = 191.
         Pixels entre 0 e 127 irão ser clusterizados pelo centroid[0], enquanto pixels entre 128 e 255 irão ser
         clusterizados pelo centroid[1]. */
-    int centroids[k];
+    int *centroids = (int*)malloc(k * sizeof(int));
 
     /* NewCentroids é o vetor utilizado para fazer a convergência dos valores centroides, fazendo com que 
         a cada interação os clusteres tenham um agrupamento mais preciso e o valor centroide represente melhor
@@ -56,10 +48,11 @@ void Kmeans(struct pgm *img, unsigned char k){
         Ex: Temos um centroide de valor 50. Mas ao analisar a média dos pixels clusterizados, percebe-se que
         eles se aproximam mais ao tom "46", diante disso, o centroid 50 tem o seu valor alterado para 46,
         a realizar um agrupamento mais adequado, e esse processo se repete até que não haja mudança significativa.*/
-    int newCentroids[k];
+    int *newCentroids = (int*)calloc(k, sizeof(int));
+    
     /* ClusterSize irá contabilizar quantos pixels estão associados a cada centroid para que seja possivel
         calcular a média que será utilizada para determinar os centroides atualizados.*/
-    int clusterSize[k];
+    int *clusterSize = (int*)calloc(k, sizeof(int));
 
     /* ClusterIndex é a variável utilizada para indicar qual cluster se aproxima mais ao pixel em questão.
         Utilizada para associar os pixels aos clusters correspondentes.*/
@@ -67,11 +60,17 @@ void Kmeans(struct pgm *img, unsigned char k){
 
     /* Output é um vetor com as mesmas dimensões da imagem, aonde serão armazenados os dados dos pixels
         clusterizados para criar a imagem resultante.*/
-    unsigned char *output = (unsigned char *)malloc((img->r * img->c)* sizeof(unsigned char));
+    unsigned char *output = (unsigned char *)malloc((lin * col)* sizeof(unsigned char));
+
+    // Evita execução caso não haja memória disponível.
+    if(!(centroids && newCentroids && clusterSize && output)){
+        puts("Memória indisponível.");
+        exit(1);
+    }
     
     // Inicia os centroides com valores proporcionais a K.
     for (int i = 0; i < k; i++) {
-        centroids[i] = (255 * i) / (k - 1);
+        *(centroids + i) = (255 * i) / (k - 1);
     }
 
     /* A variável changed será usada em um laço while para checar se houve mudança ou não entre o novo centroide
@@ -86,14 +85,17 @@ void Kmeans(struct pgm *img, unsigned char k){
         servindo como uma segunda opção de interrupção do código fora o threshold. */
     int changed, threshold = 1, iter = 0, max_iter = 100;
 
-    /* Laço while: Se na ultima interação o centroide tiver mudado e o número maximo de interações ainda não tiver
-        sido atingido, percorre todos os pixels da imagem em forma de vetor e define a distância mínima inicial para 256
+    /* Laço do...while: Executa pelo menos uma interação antes de checar o laço while, que confere se houve mudança no
+        valor de centroide e se o número máximo de interações já foi atingido, caso na interação anterior o centroide tiver
+        mudado e o número maximo de interações ainda não tiver sido atingido, percorre todos os pixels da imagem em
+        forma de vetor e define a distância mínima inicial para 256
         (distância entre 0 e 255). */
     do {
-        // Resetar novos centroides e contador de pixels em cada cluster.
+
+        // Zera os vetores newCentroids e clusterSize antes de cada iteração.
         for (int i = 0; i < k; i++) {
-            newCentroids[i] = 0;
-            clusterSize[i] = 0;
+            *(newCentroids + i) = 0;
+            *(clusterSize + i) = 0;
         }
 
         /*Laço for: Calcula a distância entre a cor do pixel e a cor de cada um dos centroides, selecionando o que tem a
@@ -104,10 +106,10 @@ void Kmeans(struct pgm *img, unsigned char k){
                     o qual a subtração resultou nessa distância. Caso haja algum cluster que dê um resultado menor, tanto
                     minDist quanto clusterIndex serão substituidos novamente, até que o laço for percorra todos os valores
                     de K.*/
-        for (int i = 0; i < img->r * img->c; i++) {
+        for (int i = 0; i < (lin * col); i++) {
             int minDist = 256;
             for (int j = 0; j < k; j++) {
-                int dist = abs(img->pData[i] - centroids[j]);
+                int dist = abs(*(data + i) - *(centroids + j));
                 if (dist < minDist) {
                     minDist = dist;
                     clusterIndex = j;
@@ -116,13 +118,13 @@ void Kmeans(struct pgm *img, unsigned char k){
 
             /* Quando o laço for é encerrado, o vetor que será usado para criar a imagem resultante recebe a cor
                 do centroide no qual o pixel foi clusterizado.*/
-            output[i] = centroids[clusterIndex];
+            *(output + i) = *(centroids + clusterIndex);
 
             /* NewCentroids recebe a cor do pixel alocado no cluster e soma o seu valor ao valor total do cluster. */
-            newCentroids[clusterIndex] += img->pData[i];
+            *(newCentroids + clusterIndex) += *(data + i);
 
             /* ClusterSize recebe +1 no seu valor específico de cada cluste para cada pixel alocado. */
-            clusterSize[clusterIndex]++;
+            (*(clusterSize + clusterIndex))++;
         }
 
         /* Define changed e totalChange para 0 e checa para cada centroide se há algum pixel associado a ele.
@@ -132,22 +134,22 @@ void Kmeans(struct pgm *img, unsigned char k){
         changed = 0;
         int totalChange = 0;
         for (int i = 0; i < k; i++) {
-            if (clusterSize[i] > 0) {
-                newCentroids[i] /= clusterSize[i];
+            if (*(clusterSize + i) > 0) {
+                *(newCentroids + i) /= *(clusterSize + i);
             } else {
                 // Caso o cluster não tenha elementos, reposiciona para um valor aleatório dentro do intervalo.
-                newCentroids[i] = rand() % 256;
+                *(newCentroids + i) = rand() % 256;
             }
 
             /* TotalChange é a diferença entre o novo centroide e o antigo. Isso serve para checar o quanto o parametro
                 mudou de um loop para o outro, servindo como condição de parada caso a mudança não seja significativa. */
-            totalChange += abs(newCentroids[i] - centroids[i]);
+            totalChange += abs(*(newCentroids + i) - *(centroids + i));
 
             /* Se o novo centroide é diferente do antigo, muda o valor de changed para 1, permitindo que o laço while
                 seja continuado, ao mesmo tempo que muda o valor de centroide para aproximar ainda mais os valores. */
-            if (newCentroids[i] != centroids[i]) {
+                if (*(newCentroids + i) != *(centroids + i)) {
                 changed = 1;
-                centroids[i] = newCentroids[i];
+                *(centroids + i) = *(newCentroids + i);
             }
         }
 
@@ -158,6 +160,13 @@ void Kmeans(struct pgm *img, unsigned char k){
 
     // Cria um vetor com os mesmos valores de centroids[k] para organizar as cores em ordem crescente.
     int *sortedCentroids = (int*)malloc(k * sizeof(int));
+
+    // Evita execução caso não haja memória disponível.
+    if(!(sortedCentroids)){
+        puts("Memória indisponível.");
+        exit(2);
+    }
+
     for (int i = 0; i < k; i++){
         *(sortedCentroids+i) = *(centroids+i);
     }
@@ -175,22 +184,37 @@ void Kmeans(struct pgm *img, unsigned char k){
 
     // Criar novos tons proporcionais a K distribuídos entre 0 e 255.
     int *newGrayLevels = (int*)malloc(k * sizeof(int));
+
+    // Evita execução caso não haja memória disponível.
+    if(!(newGrayLevels)){
+        puts("Memória indisponível.");
+        exit(3);
+    }
+
     for (int i = 0; i < k; i++) {
         *(newGrayLevels+i) = (255 * i) / (k - 1);
     }
 
-    /* Aplicar os novos tons de cinza proporcionalmente (Se o vetor de de saída estiver ordenado corretamente, substitui
-    os valores antigos pelos tons proporcionais a K) */
-    for (int i = 0; i < (img->r * img->c); i++){
-        for (int j = 0; j < k; j++){
-            if (*(output+i) == *(sortedCentroids+j)) {
-                *(output+i) = *(newGrayLevels+j);
+    /* Aplicar os novos tons de cinza proporcionalmente (Para cada pixel de output, se seu valor é igual a um centroide
+    ordenado, substitui-o pelo tom correspondente.) */
+    for (int i = 0; i < (lin * col); i++) {
+        for (int j = 0; j < k; j++) {
+            if (*(output + i) == *(sortedCentroids + j)) {
+                *(output + i) = *(newGrayLevels + j);
                 break;
             }
         }
     }
 
     // Salvar a imagem clusterizada
-    free(img->pData);
-    img->pData = output;
+    for (int i = 0; i < lin * col; i++) {
+        *(data + i) = *(output + i);
+    }
+
+    free(centroids);
+    free(newCentroids);
+    free(clusterSize);
+    free(sortedCentroids);
+    free(newGrayLevels);
+    free(output);
 }
