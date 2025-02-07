@@ -11,11 +11,9 @@ O código é um algoritmo **K-means**, escrito na linguagem C, que lê imagens *
 O código utiliza as bibliotecas **"pgm.h"** e **"k-means.h"**. Antes de compilar e executar o programa, certifique-se de que as bibliotecas estão instaladas, respectivamente, dentro das pastas **"pgm"** e **"k-means"** e de que a pasta **"images"** existe, assim como a subpasta **"results"** dentro da mesma.
 
 1. Pasta **"pgm"**
-   -pgm.h
-
+   - pgm.h
 2. Pasta **"k-means"**
-   -k-means.h
-
+   - k-means.h
 3. Pasta **"images"**
    - Pasta **results**
 
