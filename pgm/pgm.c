@@ -46,7 +46,13 @@ void readPGMImage(struct pgm *pio, char *filename){
 	FILE *fp;
 	char ch;
 
-	if (!(fp = fopen(filename,"r"))){
+#ifdef _WIN32
+	fp = fopen(filename, "rb");
+#else
+	fp = fopen(filename, "r");
+#endif
+	
+	if (!fp){
 		perror("Erro.");
 		exit(1);
 	}
