@@ -63,7 +63,7 @@ make clean
 O programa recebe o valor **K** como argumento na linha de comando:
 
 ```
-./nome_do_executável $${\color{green}3}$$
+./nome_do_executável 3
 ```
 > [!NOTE]
 > Caso o executável seja gerado pelo comando **"make"**, o nome padrão do executável será: **"prog.exe"**
