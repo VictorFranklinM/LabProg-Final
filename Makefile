@@ -31,20 +31,25 @@
 #∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗#
 
 ifeq ($(OS),Windows_NT)
-    RM = cmd /C del /Q
+    RM = cmd /C del /S /Q
+    RMDIR = cmd /C rmdir /S /Q
 else
-    RM = rm -f
+    RM = rm -rf
+    RMDIR = rm -rf
 endif
 
 all: prog.exe
 
-prog.exe: k-means/k-means.o pgm/pgm.o main.o
+prog.exe: k-means/k-means.o pgm/pgm.o pgm-histogram/histogram.o main.o
 	gcc -o $@ $^
 
 k-means/k-means.o: k-means/k-means.c
 	gcc -c $< -o $@
 
 pgm/pgm.o: pgm/pgm.c
+	gcc -c $< -o $@
+
+pgm-histogram/histogram.o: pgm-histogram/histogram.c
 	gcc -c $< -o $@
 
 main.o: main.c
@@ -56,9 +61,15 @@ ifeq ($(OS),Windows_NT)
 	-$(RM) main.o
 	-$(RM) k-means\k-means.o
 	-$(RM) pgm\pgm.o
+	-$(RM) pgm-histogram\histogram.o
+	-$(RM) images\results\* 2> nul
+	-$(RM) images\histogram\* 2> nul
 else
 	-$(RM) prog.exe
 	-$(RM) main.o
 	-$(RM) k-means/k-means.o
 	-$(RM) pgm/pgm.o
+	-$(RM) pgm-histogram/histogram.o
+	-$(RM) images/results/* 2> /dev/null || true
+	-$(RM) images/histogram/* 2> /dev/null || true
 endif
