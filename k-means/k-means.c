@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void K_means(int k, int lin, int col, unsigned char *data){
+void K_means(int k, int lin, int col, unsigned char *data, const char *nome_arquivo, unsigned char *pre_normalized_output){
 
     /* Centroids é o vetor que irá ser armazenar K tons de cinza para agrupar os pixels que se assemelham a cada cor central,
         vulgo centroide, em K conjuntos, vulgo clusters.
@@ -181,7 +181,12 @@ void K_means(int k, int lin, int col, unsigned char *data){
             }
         }
     }
-
+    
+	// Copia os valores da imagem segmentada antes da normalização para pre_normalized_output.
+	for (int i = 0; i < lin * col; i++) {
+		*(pre_normalized_output + i) = *(output + i);
+	}
+    
     // Criar novos tons proporcionais a K distribuídos entre 0 e 255.
     int *newGrayLevels = (int*)malloc(k * sizeof(int));
 
