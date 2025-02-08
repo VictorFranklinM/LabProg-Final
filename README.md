@@ -2,28 +2,6 @@
 
 O programa implementa o algoritmo **K-means** em C para processar imagens no formato **PGM (Portable Gray Map)**. Ele agrupa os pixels das imagens em **K** clusters, onde **K** é um valor definido pelo usuário na execução. As imagens de entrada devem estar dentro da pasta **"images"**, e as imagens processadas serão salvas na subpasta **"results"**. Além disso, são gerados histogramas das imagens na subpasta **"histogram"**. O programa também exibe o tempo de processamento total e a média de tempo de processamento por imagem.
 
-# Estrutura do Projeto
-
-```
-LabProg-Final/
-│── k-means/
-│   ├── k-means.h
-│   ├── k-means.c
-│── pgm/
-│   ├── pgm.h
-│   ├── pgm.c
-│── pgm-histogram/
-│   ├── histogram.h
-│   ├── histogram.c
-│── images/
-│   ├── (imagens de entrada)
-│   ├── results/
-│   ├── histogram/
-│── main.c
-│── Makefile
-│── README.md
-```
-
 # Requisitos:
 
 > [!WARNING]
