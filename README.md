@@ -44,6 +44,6 @@ O programa recebe o valor **K** como argumento na linha de comando:
 ./nome_do_executável 3
 ```
 > [!NOTE]
-> Caso o executável seja gerado pelo comando **"make"**, o nome padrão do executável será: **"prog.exe"**
+> Caso o executável seja gerado pelo comando **"make"**, o nome padrão do executável será: `prog.exe`
 
 Esta execução fará com que todas as imagens dentro da pasta **"images"** sejam clusterizadas em **3** tons de cinza. As imagens processadas serão salvas em **"images/results"**, e os histogramas serão salvos em **"images/histogram"**. Além disso, o tempo de processamento será apresentado como mensagem no terminal.
