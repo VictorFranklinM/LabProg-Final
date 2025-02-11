@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
 			unsigned char *pre_normalized_output = (unsigned char *)malloc(img.r * img.c * sizeof(unsigned char));
 			if (!pre_normalized_output) {
 				puts("Erro ao alocar memória para pre_normalized_output.");
-				exit(1);
+				exit(3);
 			}
 			K_means(k, img.r, img.c, img.pData, name_no_ext, pre_normalized_output);
 
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
 
 			// Salva a imagem segmentada final.
 			char folder_result[100];
-			snprintf(folder_result, sizeof(folder_result), "images/results/%s_k", dir->d_name);
+			snprintf(folder_result, sizeof(folder_result), "images/results/%s_k.pgm", name_no_ext);
 			writePGMImage(&img, folder_result);
 
 			// Libera memória alocada.
