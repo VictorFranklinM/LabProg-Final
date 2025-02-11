@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 			char full_path[200];
 			snprintf(full_path, sizeof(full_path), "images/%s", dir->d_name);
 
-			if ((dir->d_name[0] == '.') || (strcmp(dir->d_name, "results") == 0) || (strcmp(dir->d_name, "histogram") == 0) || (stat(full_path, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))) {
+			if ((dir->d_name[0] == '.') || (stat(full_path, &file_stat) == 0 && S_ISDIR(file_stat.st_mode))) {
                 		continue;
             		} // Ignora arquivos ocultos, o diretório results, o diretório histogram e quaisquer outras pastas dentro de images.
 
@@ -100,8 +100,9 @@ int main(int argc, char *argv[]) {
 			unsigned char *pre_normalized_output = (unsigned char *)malloc(img.r * img.c * sizeof(unsigned char));
 			if (!pre_normalized_output) {
 				puts("Erro ao alocar memória para pre_normalized_output.");
-				exit(3);
+				exit(1);
 			}
+			
 			K_means(k, img.r, img.c, img.pData, name_no_ext, pre_normalized_output);
 
 			// Gera histograma da imagem processada mas antes da normalização equidistante.
@@ -114,7 +115,7 @@ int main(int argc, char *argv[]) {
 
 			// Salva a imagem segmentada final.
 			char folder_result[100];
-			snprintf(folder_result, sizeof(folder_result), "images/results/%s_k.pgm", name_no_ext);
+			snprintf(folder_result, sizeof(folder_result), "images/results/%s-k.pgm", name_no_ext);
 			writePGMImage(&img, folder_result);
 
 			// Libera memória alocada.

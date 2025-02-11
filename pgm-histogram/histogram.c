@@ -52,9 +52,9 @@ void generateHistogram(unsigned char *data, int linhas, int colunas, const char 
 	/* Conta a frequência de cada tom de cinza e guarda. A max_freq armazena a frequência máxima encontrada. Varre todos os pixels da imagem 
  		incrementando a contagem do tom de cinza que corresponde ao do pixel atual e gravando em max_freq caso seja maior que o valor já gravado.*/
     	for (int i = 0; i < linhas * colunas; i++) {
-		hist->data[data[i]]++;
-		if (hist->data[data[i]] > hist->max_freq) {
-			hist->max_freq = hist->data[data[i]];
+			hist->data[data[i]]++;
+			if (hist->data[data[i]] > hist->max_freq) {
+				hist->max_freq = hist->data[data[i]];
 		}
 	}
 
@@ -102,7 +102,7 @@ void generateHistogram(unsigned char *data, int linhas, int colunas, const char 
 	for (int i = 0; i < 256; i++) {
 		int h = (hist->data[i] * altura) / hist->max_freq; // Faz escala da altura; divide pela frequência máxima, assim o valor de cinza com frequência máxima recebe altura máxima, e o resto recebe proporcional a ele.
 		for (int j = 0; j < h; j++) {
-			histImg[(altura - j - 1) * largura + i] = 255; // Branco para os pixels das "colunas" do histograma.
+			histImg[(altura - 1 - j) * largura + i] = 255; // Branco para os pixels das "colunas" do histograma.
 		}
 	}
 
@@ -122,6 +122,4 @@ void generateHistogram(unsigned char *data, int linhas, int colunas, const char 
 	free(outputCSV);
 	free(outputPGM);
 	free(histImg);
-
-	printf("Histograma salvo em %s e %s\n", outputCSV, outputPGM);
 }

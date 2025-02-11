@@ -32,10 +32,8 @@
 
 ifeq ($(OS),Windows_NT)
     RM = cmd /C del /S /Q
-    RMDIR = cmd /C rmdir /S /Q
 else
     RM = rm -rf
-    RMDIR = rm -rf
 endif
 
 all: prog.exe
